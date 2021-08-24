@@ -73,7 +73,6 @@ class Styles
 
 /**
  * Class StylesTemplate
- * @package KWCMS\modules\Styles
  */
 class StylesTemplate extends ATemplate
 {
