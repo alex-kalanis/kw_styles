@@ -9,10 +9,10 @@ $paths->setPathToSystemRoot('/..');
 /// ... other steps
 
 // init styles
-\kalanis\kw_styles\Styles::init($paths);
+\kalanis\kw_styles\Styles::init(new \kalanis\kw_styles\Loaders\PhpLoader($paths));
 
 
-//// Now class itself
+//// Now class to access styles itself
 
 use kalanis\kw_mime\MimeType;
 use kalanis\kw_extras\ExternalLink;
@@ -73,6 +73,7 @@ class Styles
 
 /**
  * Class StylesTemplate
+ * Template to render style element
  */
 class StylesTemplate extends ATemplate
 {
