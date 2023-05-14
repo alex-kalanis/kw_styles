@@ -64,6 +64,6 @@ class PhpLoader implements ILoader
 
     protected function includedStyles(string $path): string
     {
-        return (string)@file_get_contents($path);
+        return (string) @file_get_contents($path);
     }
 }

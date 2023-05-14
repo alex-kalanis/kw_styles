@@ -15,7 +15,7 @@ Store styles for simplified render after everything has been prepared.
 ```
 {
     "require": {
-        "alex-kalanis/kw_styles": "1.0"
+        "alex-kalanis/kw_styles": "2.1"
     }
 }
 ```
