@@ -2,14 +2,22 @@
 
 /// in bootstrap
 
-$paths = new \kalanis\kw_paths\Path();
-$paths->setDocumentRoot(realpath($_SERVER['DOCUMENT_ROOT']));
-$paths->setPathToSystemRoot('/..');
+// where is the system?
+$systemPaths = new \kalanis\kw_paths\Path();
+$systemPaths->setDocumentRoot(realpath($_SERVER['DOCUMENT_ROOT']));
+$systemPaths->setPathToSystemRoot('/..');
+\kalanis\kw_paths\Stored::init($systemPaths);
+
+// load virtual parts - if exists
+$routedPaths = new \kalanis\kw_routed_paths\RoutedPath(new \kalanis\kw_routed_paths\Sources\Server(
+    strval(getenv('VIRTUAL_DIRECTORY') ?: 'dir_from_config/')
+));
+\kalanis\kw_routed_paths\StoreRouted::init($routedPaths);
 
 /// ... other steps
 
 // init styles
-\kalanis\kw_styles\Styles::init(new \kalanis\kw_styles\Loaders\PhpLoader($paths));
+\kalanis\kw_styles\Styles::init(new \kalanis\kw_styles\Loaders\PhpLoader($systemPaths, $routedPaths));
 
 
 //// Now class to access styles itself

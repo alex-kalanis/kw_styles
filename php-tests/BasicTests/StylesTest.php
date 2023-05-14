@@ -5,6 +5,9 @@ namespace BasicTests;
 
 use CommonTestClass;
 use kalanis\kw_paths\Path;
+use kalanis\kw_paths\PathsException;
+use kalanis\kw_routed_paths\RoutedPath;
+use kalanis\kw_routed_paths\Sources as routeSource;
 use kalanis\kw_styles\Interfaces\ILoader;
 use kalanis\kw_styles\Loaders\MultiLoader;
 use kalanis\kw_styles\Loaders\PhpLoader;
@@ -24,32 +27,40 @@ class StylesTest extends CommonTestClass
     }
 
     /**
+     * @throws PathsException
      * @throws StylesException
      */
     public function testGetRealFile(): void
     {
         $path = new Path();
         $path->setDocumentRoot(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data');
-        Styles::init(new PhpLoader($path));
+        $routed = new RoutedPath(new routeSource\Arrays([]));
+        Styles::init(new PhpLoader($path, $routed));
         $this->assertEquals('/* dummy style file */', Styles::getFile('dummy', 'dummyStyle.css'));
     }
 
     /**
+     * @throws PathsException
      * @throws StylesException
      */
     public function testGetNoFile(): void
     {
         $path = new Path();
         $path->setDocumentRoot(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data');
-        Styles::init(new PhpLoader($path));
+        $routed = new RoutedPath(new routeSource\Arrays([]));
+        Styles::init(new PhpLoader($path, $routed));
         $this->assertEquals('', Styles::getFile('dummy', '**really-not-existing'));
     }
 
+    /**
+     * @throws PathsException
+     */
     public function testWant(): void
     {
         $path = new Path();
-        $path->setDocumentRoot('/tmp/none');
-        Styles::init(new PhpLoader($path));
+        $path->setDocumentRoot(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data');
+        $routed = new RoutedPath(new routeSource\Arrays([]));
+        Styles::init(new PhpLoader($path, $routed));
 
         Styles::want('foo', 'abc');
         Styles::want('foo', 'def');
@@ -62,6 +73,9 @@ class StylesTest extends CommonTestClass
         ], Styles::getAll());
     }
 
+    /**
+     * @throws StylesException
+     */
     public function testMulti(): void
     {
         $lib = new MultiLoader();
