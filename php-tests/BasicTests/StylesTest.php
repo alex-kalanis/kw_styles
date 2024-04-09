@@ -27,6 +27,16 @@ class StylesTest extends CommonTestClass
     }
 
     /**
+     * @throws StylesException
+     */
+    public function testNoLoader(): void
+    {
+        Styles::init(null);
+        $this->expectException(StylesException::class);
+        Styles::getFile('anything here', 'will die');
+    }
+
+    /**
      * @throws PathsException
      * @throws StylesException
      */
